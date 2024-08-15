@@ -27,7 +27,6 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         echo "<svg class='bi flex-shrink-0 me-2' width='24' height='24' role='img' aria-label='Danger:'><use xlink:href='#exclamation-triangle-fill'/></svg>";
         echo "<div>มีข้อมูลนักศึกษาที่มีชื่อและรหัสนักศึกษาเดียวกันในฐานข้อมูล</div>";
         echo "</div>";
-
     } else {
         // กระบวนการบันทึกข้อมูลลงในฐานข้อมูล
         $new_password = md5($user_password . $user_id);
@@ -46,36 +45,46 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
 ?>
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link rel="stylesheet" href="style12.css">
-    <script src="https://kit.fontawesome.com/5ac6f35790.js" crossorigin="anonymous"></script>
+    <link rel="icon" type="image/x-icon" href="https://scontent-xsp1-1.xx.fbcdn.net/v/t1.15752-9/354780589_809389650329623_8389356405749328912_n.png?_nc_cat=105&ccb=1-7&_nc_sid=ae9488&_nc_eui2=AeEqZN6E7nkuo9_Srb0Xa1HsU2ezQNG-XE1TZ7NA0b5cTe4QHCgg5hUlsLB93YkdJskMEwmQtMhkrSo8k-KACwSX&_nc_ohc=KN4031rutaoAX9Qucua&_nc_ht=scontent-xsp1-1.xx&oh=03_AdSY9bQ2f2S7aJJtFp-x98gDnV2ZpbMS-Iu1veoEmQ7CTw&oe=64B38CCD">
+    <title>Register</title>
+    <link rel="stylesheet" href="stylelog.css">
+    <script src="https://cdn.tailwindcss.com"></script>
     <link rel="shortcut icon" href="https://www.linknacional.com.br/wp-content/uploads/2021/03/html-icon-480x480.png" type="image/x-icon">
-    <title>easy sign in form</title>
-</head>
-<body>
-    <div class="container">
-        <div class="form-box">
-            <h1>SIGN UP</h1>
-            <form method="post" action="<?php echo $_SERVER['PHP_SELF']; ?>">
-                <div class="input-group">
-                    <div class="input-field">
-                        <i class="fa-solid fa-user"></i>
-                        <input type="text" name="user_id" placeholder="Student_id ">
-                    </div>
 
-                    <div class="input-field">
-                        <i class="fa-solid fa-lock"></i>
-                        <input type="password" name="user_password" placeholder="Password">
+</head>
+
+<body>
+
+    <form method="post" action="<?php echo $_SERVER['PHP_SELF']; ?>">
+        <div class="row">
+            <div class="colm-form">
+                <div class="form-container">
+                    <h2 class="text-center text-3xl font-bold mt-3">Sign Up</h2>
+                    <h4 class="text-center text-xl font-thin mb-3">ลงทะเบียน</h4>
+                    <div class="">
+                        <div class="input-field flex items-center justify-center">
+                            <i class="fa-solid fa-user"></i>
+                            <input type="text" name="user_id" placeholder="Student_id " class="w-full px-3 py-2 border border-gray-300 rounded focus:outline-none focus:ring-2 focus:ring-blue-500">
+                        </div>
+                        <div class="input-field flex items-center justify-center">
+                            <i class="fa-solid fa-lock"></i>
+                            <input type="password" name="user_password" placeholder="Password" class="w-full px-3 py-2 border border-gray-300 rounded focus:outline-none focus:ring-2 focus:ring-blue-500">
+                        </div>
+                    </div>
+                    <div class="btn-field">
+                        <input type="submit" name="submit" value="Sign Up" class="bg-sky-400 text-white rounded-lg text-lg font-semibold w-2/4 cursor-pointer hover:bg-blue-600">
+
+                        <button type="button"><a href="login.php">Login</a></button>
                     </div>
                 </div>
-                <div class="btn-field">
-                    <input type="submit" name="submit" value="Sign up" class="btn btn-primary my-3">
-                    <button type="button"><a href="login.php">Login</a></button>
-                </div>
-            </form>
+            </div>
         </div>
-    </div>
+    </form>
 </body>
+
 </html>

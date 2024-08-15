@@ -5,7 +5,7 @@ $username = "root";
 $password = "";
 $dbname = "cpework"; //ชื่อฐานข้อมูล
 
-$conn = mysqli_connect($servername,$username,$password,$dbname);
+$conn = mysqli_connect($servername, $username, $password, $dbname);
 
 if ($conn->connect_error) {
     die("การเชื่อมต่อล้มเหลว: " . $conn->connect_error);
@@ -31,7 +31,6 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         echo "<svg class='bi flex-shrink-0 me-2' width='24' height='24' role='img' aria-label='Danger:'><use xlink:href='#exclamation-triangle-fill'/></svg>";
         echo "<div>มีข้อมูลนักศึกษาที่มีชื่อและรหัสนักศึกษาเดียวกันในฐานข้อมูล</div>";
         echo "</div>";
-
     } else {
         // กระบวนการบันทึกข้อมูลลงในฐานข้อมูล
         $sql = "INSERT INTO record1 (Name, Student_id, Bank_name, Bank_account, Telephone,department,term) VALUES ('$Name', '$Student_id', '$Bank_name' ,'$Bank_account', '$Telephone','$department','$term')";
@@ -51,63 +50,76 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
 ?>
 
 <!DOCTYPE html>
-<html>
+<html lang="en">
 
 <head>
-    <title>เพิ่มข้อมูลนักเรียน</title>
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC" crossorigin="anonymous">
-
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>เพิ่มข้อมูลนักศึกษา</title>
+    <link rel="stylesheet" href="//code.jquery.com/ui/1.13.2/themes/base/jquery-ui.css">
+    <script src="https://code.jquery.com/jquery-3.6.0.js"></script>
+    <script src="https://code.jquery.com/ui/1.13.2/jquery-ui.js"></script>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+        $(function() {
+            $("#datepicker").datepicker();
+        });
+    </script>
 </head>
 
 <body>
 
-
-
     <div class="container">
         <div class="row">
-            <div class="col-md-6">
-                <form method="POST" action="<?php echo $_SERVER["PHP_SELF"]; ?>" class=" position-absolute top-50 start-50 translate-middle"><br>
-                    <h4>เพิ่มข้อมูลนักศึกษา</h4>
-                    ชื่อ นามสกุล (ใส่คำนำหน้า): <input type="text" name="Name" class="form-control" required>
-                    รหัสนักศึกษา : <input type="text" name="Student_id" class="form-control" required>
-                    ชื่อธนาคาร :
-                    <select name="Bank_name" class="form-control" required>
-                        <option value="">เลือกธนาคาร</option>
+            <h1 class="text-center text-4xl font-semibold text-black  mt-0 pt-0 ">เพิ่มข้อมูลนักศึกษา</h1>
+
+            <div class="col-md-6 mt-0">
+                <form method="POST" action="<?php echo $_SERVER["PHP_SELF"]; ?>" class=" position-absolute top-[60%] start-50 translate-middle"><br>
+                    <br>
+                    ชื่อ นามสกุล: <input type="text" name="Name" class="form-control mb-2" required>
+                    รหัสนักศึกษา: <input type="text" name="Student_id" class="form-control mb-2" required>
+                    ชื่อธนาคาร:
+                    <select name="Bank_name" class="form-control mb-2">
+                        <option value="" disabled selected hidden>เลือกธนาคาร</option>
                         <option value="ธนาคารกสิกรไทย">ธนาคารกสิกรไทย</option>
                         <option value="ธนาคารกรุงเทพ">ธนาคารกรุงเทพ</option>
                         <option value="ธนาคารกรุงศรีอยุธยา">ธนาคารกรุงศรีอยุธยา</option>
-                        <option value="ธนาคารกสิกรไทย">ธนาคารออมสิน</option>
-                        <option value="ธนาคารกรุงเทพ">ธนาคารกรุงไทย</option>
-                        <option value="ธนาคารกรุงศรีอยุธยา">ธนาคารทหารไทยธนชาต</option>
-                        <option value="ธนาคารกสิกรไทย">ธนาคารซีไอเอ็มบี</option>
-                        <option value="ธนาคารกรุงเทพ">ธนาคารไทยพาณิชย์</option>
+                        <option value="ธนาคารออมสิน">ธนาคารออมสิน</option>
+                        <option value="ธนาคารกรุงไทย">ธนาคารกรุงไทย</option>
+                        <option value="ธนาคารทหารไทยธนชาต">ธนาคารทหารไทยธนชาต</option>
+                        <option value="ธนาคารซีไอเอ็มบี">ธนาคารซีไอเอ็มบี</option>
+                        <option value="ธนาคารไทยพาณิชย์">ธนาคารไทยพาณิชย์</option>
                     </select>
 
-                    เลือกภาคการศึกษา :
-                    <select name="department" class="form-control" required>
-                        <option value="">เลือกภาคการศึกษา</option>
-                        <option value="สาขาวิศวกรรมคอมพิวเตอร์(หลักสูตรปกติ)">สาขาวิศวกรรมคอมพิวเตอร์(หลักสูตรปกติ)</option>
-                        <option value="สาขาวิศวกรรมคอมพิวเตอร์(หลักสูตรนานาชาติ)">สาขาวิศวกรรมคอมพิวเตอร์(หลักสูตรนานาชาติ)</option>
-                        <option value="สาขาวิทยาศาสตร์ข้อมูลสุขภาพ">สาขาวิทยาศาสตร์ข้อมูลสุขภาพ</option>
-                        <option value="สาขาวิศวกรรมคอมพิวเตอร์(พื้นที่การศึกษาราชบุรี)">สาขาวิศวกรรมคอมพิวเตอร์(พื้นที่การศึกษาราชบุรี)</option>
-                    </select>
+                    <div class="flex space-x-4 mb-2">
+                        <div>
+                            เลือกภาคการศึกษา:
+                            <select name="department" class="form-control">
+                                <option value="" disabled selected hidden>เลือกภาคการศึกษา</option>
+                                <option value="สาขาวิศวกรรมคอมพิวเตอร์(หลักสูตรปกติ)">สาขาวิศวกรรมคอมพิวเตอร์(หลักสูตรปกติ)</option>
+                                <option value="สาขาวิศวกรรมคอมพิวเตอร์(หลักสูตรนานาชาติ)">สาขาวิศวกรรมคอมพิวเตอร์(หลักสูตรนานาชาติ)</option>
+                                <option value="สาขาวิทยาศาสตร์ข้อมูลสุขภาพ">สาขาวิทยาศาสตร์ข้อมูลสุขภาพ</option>
+                                <option value="สาขาวิศวกรรมคอมพิวเตอร์(พื้นที่การศึกษาราชบุรี)">สาขาวิศวกรรมคอมพิวเตอร์(พื้นที่การศึกษาราชบุรี)</option>
+                            </select>
+                        </div>
+                        <div>
+                            เลือกเทอม:
+                            <select name="term" class="form-control">
+                                <option value="" disabled selected hidden>เลือกเทอม</option>
+                                <option value="1">1</option>
+                                <option value="2">2</option>
+                                <option value="S">S</option>
+                            </select>
+                        </div>
+                    </div>
 
-           <select name="term" class="form-control" >
-              <option value="">เลือกเทอม</option>
-              <option value="1">1</option>
-            <option value="2">2</option>
-           <option value="S">S</option>
-           </select>
-
-
-                    เลขบัญชี : <input type="text" name="Bank_account" class="form-control" required>
-                    เบอร์มือถือ : <input type="text" name="Telephone" class="form-control" required><br>
-                    <input type="submit" class="btn btn-outline-success" value="บันทึกข้อมูล">
+                    เลขบัญชี: <input type="text" name="Bank_account" class="form-control mb-2">
+                    เบอร์มือถือ: <input type="text" name="Telephone" class="form-control mb-0"><br>
+                    <input type="submit" class="btn btn-outline-success w-full mb-4" value="บันทึกข้อมูล">
                 </form>
             </div>
         </div>
     </div>
-
 
 </body>
 
