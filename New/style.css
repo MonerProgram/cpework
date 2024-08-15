@@ -1,0 +1,14 @@
+table{
+    align-items: center;
+}
+#a{
+ margin-top: 2%;
+ padding-left: 1cm;
+ padding-right: 1cm;
+}
+button {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        height: 200px;
+      }
