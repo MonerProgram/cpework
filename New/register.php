@@ -26,29 +26,51 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     $result = $conn->query($sql);
 
     if ($result->num_rows > 0) {
-        echo "<div class='alert alert-danger d-flex align-items-center' role='alert'>";
-        echo "<i class='bi bi-exclamation-triangle-fill'></i>";
-        echo "<svg class='bi flex-shrink-0 me-2' width='24' height='24' role='img' aria-label='Danger:'><use xlink:href='#exclamation-triangle-fill'/></svg>";
-        echo "<div>มีข้อมูลนักศึกษาที่มีชื่อและรหัสนักศึกษาเดียวกันในฐานข้อมูล</div>";
-        echo "</div>";
+        $message = "มีข้อมูลนักศึกษาที่มีชื่อและรหัสนักศึกษาเดียวกันในระบบ";
+        $modalType = "danger";
     } else {
-        // กระบวนการบันทึกข้อมูลลงในฐานข้อมูล
         $sql = "INSERT INTO record1 (Name, Student_id, Bank_name, Bank_account, Telephone,department,term) VALUES ('$Name', '$Student_id', '$Bank_name' ,'$Bank_account', '$Telephone','$department','$term')";
-
         if ($conn->query($sql) === true) {
-            echo "<div class='alert alert-success d-flex align-items-center' role='alert'>";
-            echo "<i class='bi bi-check-circle-fill'></i>";
-            echo " <svg class='bi flex-shrink-0 me-2' width='24' height='24' role='img' aria-label='Success:'><use xlink:href='#check-circle-fill'/></svg>";
-            echo "<div>บันทึกเรียบร้อย</div>";
-            echo "</div>";
+            $message = "บันทึกเรียบร้อย";
+            $modalType = "success";
         } else {
-            echo "การบันทึกข้อมูลลงในฐานข้อมูลล้มเหลว: " . $conn->error;
+            $message = "การบันทึกข้อมูลลงในฐานข้อมูลล้มเหลว: " . $conn->error;
+            $modalType = "danger";
         }
     }
 }
 
 ?>
+<!-- HTML ส่วนแสดงผล -->
+<?php if (!empty($message)): ?>
+    <div class="modal fade" id="messageModal" tabindex="-1" aria-labelledby="messageModalLabel" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="messageModalLabel">
+                        <?php echo ($modalType == "success") ? "สำเร็จ" : "เกิดข้อผิดพลาด"; ?>
+                    </h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    <?php echo $message; ?>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-<?php echo $modalType; ?>" data-bs-dismiss="modal" id="closeModalBtn">ปิด</button>
+                </div>
+            </div>
+        </div>
+    </div>
 
+    <script>
+        var messageModal = new bootstrap.Modal(document.getElementById('messageModal'));
+        messageModal.show();
+
+        document.getElementById('closeModalBtn').addEventListener('click', function() {
+            window.location.href = 'addfrom.php'; // เปลี่ยนที่นี่เป็น URL ของหน้า login ของคุณ
+        });
+    </script>
+<?php endif; ?>
 <!DOCTYPE html>
 <html lang="en">
 
@@ -60,6 +82,11 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     <script src="https://code.jquery.com/jquery-3.6.0.js"></script>
     <script src="https://code.jquery.com/ui/1.13.2/jquery-ui.js"></script>
     <script src="https://cdn.tailwindcss.com"></script>
+    <!-- Bootstrap CSS -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+
+    <!-- Bootstrap JavaScript -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
     <script>
         $(function() {
             $("#datepicker").datepicker();
@@ -104,7 +131,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
                         </div>
                         <div>
                             เลือกเทอม:
-                            <select name="term" class="form-control">
+                            <select name="term" class="form-control mb-2">
                                 <option value="" disabled selected hidden>เลือกเทอม</option>
                                 <option value="1">1</option>
                                 <option value="2">2</option>

@@ -23,7 +23,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     $result = $conn->query($sql);
 
     if ($result->num_rows > 0) {
-        $message = "มีข้อมูลนักศึกษาที่มีชื่อและรหัสนักศึกษาเดียวกันใน";
+        $message = "มีข้อมูลนักศึกษาที่มีชื่อและรหัสนักศึกษาเดียวกันในระบบ";
         $modalType = "danger";
     } else {
         $sql = "INSERT INTO users (user_id, user_password) VALUES ('$user_id', '$new_password')";
