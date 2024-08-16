@@ -11,8 +11,9 @@ if ($conn->connect_error) {
     die("การเชื่อมต่อล้มเหลว: " . $conn->connect_error);
 }
 
-// รับข้อมูลพิ่มลงในฐานข้อมูล
-// ตรวจสอบว่ามีข้อมูลนักศึกษาที่มีชื่อและรหัสนักศึกษาเดียวกันหรือไม่
+$message = "";
+$modalType = "";
+
 if ($_SERVER["REQUEST_METHOD"] == "POST") {
     $user_id = $_POST["user_id"];
     $user_password = $_POST["user_password"];
@@ -22,27 +23,50 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     $result = $conn->query($sql);
 
     if ($result->num_rows > 0) {
-        echo "<div class='alert alert-danger d-flex align-items-center' role='alert'>";
-        echo "<i class='bi bi-exclamation-triangle-fill'></i>";
-        echo "<svg class='bi flex-shrink-0 me-2' width='24' height='24' role='img' aria-label='Danger:'><use xlink:href='#exclamation-triangle-fill'/></svg>";
-        echo "<div>มีข้อมูลนักศึกษาที่มีชื่อและรหัสนักศึกษาเดียวกันในฐานข้อมูล</div>";
-        echo "</div>";
+        $message = "มีข้อมูลนักศึกษาที่มีชื่อและรหัสนักศึกษาเดียวกันใน";
+        $modalType = "danger";
     } else {
-        // กระบวนการบันทึกข้อมูลลงในฐานข้อมูล
-        $new_password = md5($user_password . $user_id);
-        $sql = "INSERT INTO users (user_id,user_password) VALUES ('$user_id','$new_password')";
+        $sql = "INSERT INTO users (user_id, user_password) VALUES ('$user_id', '$new_password')";
         if ($conn->query($sql) === true) {
-            echo "<div class='alert alert-success d-flex align-items-center' role='alert'>";
-            echo "<i class='bi bi-check-circle-fill'></i>";
-            echo " <svg class='bi flex-shrink-0 me-2' width='24' height='24' role='img' aria-label='Success:'><use xlink:href='#check-circle-fill'/></svg>";
-            echo "<div>บันทึกเรียบร้อย</div>";
-            echo "</div>";
+            $message = "บันทึกเรียบร้อย";
+            $modalType = "success";
         } else {
-            echo "การบันทึกข้อมูลลงในฐานข้อมูลล้มเหลว: " . $conn->error;
+            $message = "การบันทึกข้อมูลลงในฐานข้อมูลล้มเหลว: " . $conn->error;
+            $modalType = "danger";
         }
     }
 }
 ?>
+<!-- HTML ส่วนแสดงผล -->
+<?php if (!empty($message)): ?>
+    <div class="modal fade" id="messageModal" tabindex="-1" aria-labelledby="messageModalLabel" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="messageModalLabel">
+                        <?php echo ($modalType == "success") ? "สำเร็จ" : "เกิดข้อผิดพลาด"; ?>
+                    </h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    <?php echo $message; ?>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-<?php echo $modalType; ?>" data-bs-dismiss="modal" id="closeModalBtn">ปิด</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        var messageModal = new bootstrap.Modal(document.getElementById('messageModal'));
+        messageModal.show();
+
+        document.getElementById('closeModalBtn').addEventListener('click', function() {
+            window.location.href = 'login.php'; // เปลี่ยนที่นี่เป็น URL ของหน้า login ของคุณ
+        });
+    </script>
+<?php endif; ?>
 <!DOCTYPE html>
 <html lang="en">
 
@@ -53,6 +77,11 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     <link rel="icon" type="image/x-icon" href="https://scontent-xsp1-1.xx.fbcdn.net/v/t1.15752-9/354780589_809389650329623_8389356405749328912_n.png?_nc_cat=105&ccb=1-7&_nc_sid=ae9488&_nc_eui2=AeEqZN6E7nkuo9_Srb0Xa1HsU2ezQNG-XE1TZ7NA0b5cTe4QHCgg5hUlsLB93YkdJskMEwmQtMhkrSo8k-KACwSX&_nc_ohc=KN4031rutaoAX9Qucua&_nc_ht=scontent-xsp1-1.xx&oh=03_AdSY9bQ2f2S7aJJtFp-x98gDnV2ZpbMS-Iu1veoEmQ7CTw&oe=64B38CCD">
     <title>Register</title>
     <link rel="stylesheet" href="stylelog.css">
+    <!-- Bootstrap CSS -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+
+    <!-- Bootstrap JavaScript -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
     <script src="https://cdn.tailwindcss.com"></script>
     <link rel="shortcut icon" href="https://www.linknacional.com.br/wp-content/uploads/2021/03/html-icon-480x480.png" type="image/x-icon">
 
