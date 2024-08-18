@@ -14,6 +14,11 @@ if(isset($_POST['submit']))
   $work= $_POST['work'];
   $work_detail=$_POST['work_detail'];
   $dates = date('Y-m-d', strtotime($_POST['dates']));
+  // ตรวจสอบว่ามีการกรอกข้อมูลครบถ้วนหรือไม่
+  if (empty($timestart_morning) || empty($timeend_morning) || empty($timestart_noon) || empty($timeend_noon) || empty($work) || empty($work_detail)) {
+    echo "<script>alert('กรุณากรอกข้อมูลให้ครบถ้วน');</script>";
+    exit;
+  }
   $t1 = strtotime ($timestart_morning); 
   $t2 = strtotime ($timeend_morning); 
   $h1 = round (abs ($t2 - $t1) / 3600, 2);
@@ -35,13 +40,15 @@ if ($isWithinNoonRange || $Time > 6) {
     $message = "ไม่สามารถบันทึกข้อมูลในช่วงเวลา 12:00 โมง - 13:00 โมงได้ หรือ ไม่สามารถบันทึกชั่วโมงงานเกิน 6 ได้";
     require_once "layout/error_message.php";
 } else {
-  $query = "INSERT INTO record (timestart_morning,timeend_morning,timestart_noon,timeend_noon,work,work_detail,dates,Time,user_id) VALUES ('$timestart_morning','$timeend_morning','$timestart_noon','$timeend_noon','$work','$work_detail','$dates','$Time','$row[user_id]')";
+  $query = "INSERT INTO record (timestart_morning,timeend_morning,timestart_noon,timeend_noon,work,work_detail,dates,Time,user_id)
+            VALUES ('$timestart_morning','$timeend_morning','$timestart_noon','$timeend_noon','$work','$work_detail','$dates','$Time','$row[user_id]')";
   $query_run = mysqli_query($conn, $query);
     if($query_run){
       $message = "บันทึกข้อมูลเรียบร้อย";
       require_once "layout/success_message.php";
     }
     else{
+      $message = "เกิดข้อผิดพลาดในการบันทึกข้อมูล";
       require_once "layout/error_message.php";
     }
 }
@@ -228,6 +235,7 @@ if ($isWithinNoonRange || $Time > 6) {
 
                               </select>
                               <?php
+                              // บรรทัดนี้จะปิดการแสดงข้อผิดพลาดที่อาจเกิดขึ้นในระหว่างการทำงานของสคริปต์
                                   error_reporting(0);
                                   ini_set('display_errors', 0);
             $timestart_morning=$_POST['timestart_morning'];
