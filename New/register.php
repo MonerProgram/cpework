@@ -11,8 +11,6 @@ if ($conn->connect_error) {
     die("การเชื่อมต่อล้มเหลว: " . $conn->connect_error);
 }
 
-// รับข้อมูลพิ่มลงในฐานข้อมูล
-// ตรวจสอบว่ามีข้อมูลนักศึกษาที่มีชื่อและรหัสนักศึกษาเดียวกันหรือไม่
 if ($_SERVER["REQUEST_METHOD"] == "POST") {
     $Name = $_POST["Name"];
     $Student_id = $_POST["Student_id"];
@@ -21,25 +19,32 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     $Telephone = $_POST["Telephone"];
     $department = $_POST["department"];
     $term = $_POST["term"];
-    mysqli_set_charset($conn, 'utf8');
-    $sql = "SELECT * FROM record1 WHERE Name = '$Name' AND Student_id = '$Student_id'";
-    $result = $conn->query($sql);
 
-    if ($result->num_rows > 0) {
-        $message = "มีข้อมูลนักศึกษาที่มีชื่อและรหัสนักศึกษาเดียวกันในระบบ";
+    // ตรวจสอบว่ากรอกข้อมูลครบถ้วนหรือไม่
+    if (empty($Name) || empty($Student_id) || empty($Bank_name) || empty($Bank_account) || empty($Telephone) || empty($department) || empty($term)) {
+        $message = "กรุณากรอกข้อมูลให้ครบถ้วน";
         $modalType = "danger";
     } else {
-        $sql = "INSERT INTO record1 (Name, Student_id, Bank_name, Bank_account, Telephone,department,term) VALUES ('$Name', '$Student_id', '$Bank_name' ,'$Bank_account', '$Telephone','$department','$term')";
-        if ($conn->query($sql) === true) {
-            $message = "บันทึกเรียบร้อย";
-            $modalType = "success";
-        } else {
-            $message = "การบันทึกข้อมูลลงในฐานข้อมูลล้มเหลว: " . $conn->error;
+        // ตรวจสอบว่ามีข้อมูลนักศึกษาที่มีชื่อและรหัสนักศึกษาเดียวกันหรือไม่
+        mysqli_set_charset($conn, 'utf8');
+        $sql = "SELECT * FROM record1 WHERE Name = '$Name' AND Student_id = '$Student_id'";
+        $result = $conn->query($sql);
+
+        if ($result->num_rows > 0) {
+            $message = "มีข้อมูลนักศึกษาที่มีชื่อและรหัสนักศึกษาเดียวกันในระบบ";
             $modalType = "danger";
+        } else {
+            $sql = "INSERT INTO record1 (Name, Student_id, Bank_name, Bank_account, Telephone,department,term) VALUES ('$Name', '$Student_id', '$Bank_name' ,'$Bank_account', '$Telephone','$department','$term')";
+            if ($conn->query($sql) === true) {
+                $message = "บันทึกเรียบร้อย";
+                $modalType = "success";
+            } else {
+                $message = "การบันทึกข้อมูลลงในฐานข้อมูลล้มเหลว: " . $conn->error;
+                $modalType = "danger";
+            }
         }
     }
 }
-
 ?>
 <!-- HTML ส่วนแสดงผล -->
 <?php if (!empty($message)): ?>
@@ -98,13 +103,13 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
 
     <div class="container">
         <div class="row">
-            <h1 class="text-center text-4xl font-semibold text-black  mt-0 pt-0 ">เพิ่มข้อมูลนักศึกษา</h1>
+            <h1 class="text-center text-4xl font-semibold text-black mt-0 pt-0">เพิ่มข้อมูลนักศึกษา</h1>
 
             <div class="col-md-6 mt-0">
-                <form method="POST" action="<?php echo $_SERVER["PHP_SELF"]; ?>" class=" position-absolute top-[60%] start-50 translate-middle"><br>
+                <form method="POST" action="<?php echo $_SERVER["PHP_SELF"]; ?>" class="position-absolute top-[60%] start-50 translate-middle"><br>
                     <br>
-                    ชื่อ นามสกุล: <input type="text" name="Name" class="form-control mb-2" required>
-                    รหัสนักศึกษา: <input type="text" name="Student_id" class="form-control mb-2" required>
+                    ชื่อ นามสกุล: <input type="text" name="Name" class="form-control mb-2">
+                    รหัสนักศึกษา: <input type="text" name="Student_id" class="form-control mb-2">
                     ชื่อธนาคาร:
                     <select name="Bank_name" class="form-control mb-2">
                         <option value="" disabled selected hidden>เลือกธนาคาร</option>
