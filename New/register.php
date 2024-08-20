@@ -34,10 +34,13 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
             $message = "มีข้อมูลนักศึกษาที่มีชื่อและรหัสนักศึกษาเดียวกันในระบบ";
             $modalType = "danger";
         } else {
-            $sql = "INSERT INTO record1 (Name, Student_id, Bank_name, Bank_account, Telephone,department,term) VALUES ('$Name', '$Student_id', '$Bank_name' ,'$Bank_account', '$Telephone','$department','$term')";
+            $sql = "INSERT INTO record1 (Name, Student_id, Bank_name, Bank_account, Telephone, department, term) 
+            VALUES ('$Name', '$Student_id', '$Bank_name', '$Bank_account', '$Telephone', '$department', '$term')";
+            echo $sql;
             if ($conn->query($sql) === true) {
                 $message = "บันทึกเรียบร้อย";
                 $modalType = "success";
+
             } else {
                 $message = "การบันทึกข้อมูลลงในฐานข้อมูลล้มเหลว: " . $conn->error;
                 $modalType = "danger";

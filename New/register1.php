@@ -14,6 +14,7 @@ if ($conn->connect_error) {
 $message = "";
 $modalType = "";
 
+// ตรวจสอบว่ามี user ซ้ำกันหรือเปล่า
 if ($_SERVER["REQUEST_METHOD"] == "POST") {
     $user_id = $_POST["user_id"];
     $user_password = $_POST["user_password"];
