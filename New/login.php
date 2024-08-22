@@ -2,10 +2,13 @@
 $title = "แบบฟอร์มลงชื่อเข้าใช้";
 require_once "layout/header.php";
 require_once "db/connect.php";
+
 if ($_SERVER["REQUEST_METHOD"] == "POST") {
     $user_id = $_POST["user_id"];
     $user_password = $_POST["user_password"];
     $new_password = md5($user_password . $user_id);
+
+    // ตรวจสอบผู้ใช้
     $result = $user->getUser($user_id, $new_password);
 
     if (!$result) {
@@ -14,10 +17,17 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     } else {
         $_SESSION["user_id"] = $user_id;
         $_SESSION["user_password"] = $result["id"];
-        header("Location:addfrom.php");
+
+        // เปลี่ยนเส้นทางตาม user_id
+        if ($user_id === 'admin') {
+            header("Location: head.php");
+        } else {
+            header("Location: addfrom.php");
+        }
+        exit();
     }
 }
-?>
+?> <!-- ต้องแก้จากตรงนี้ ต้องแบ่งให้ แอดมิน loca ไป head ผู้ใช้ loca ไป addfrom -->
 <!-- HTML ส่วนแสดงผล -->
 <?php if (!empty($message)): ?>
     <div class="modal fade" id="messageModal" tabindex="-1" aria-labelledby="messageModalLabel" aria-hidden="true">

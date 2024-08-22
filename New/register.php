@@ -10,10 +10,10 @@ $conn = mysqli_connect($servername, $username, $password, $dbname);
 if ($conn->connect_error) {
     die("การเชื่อมต่อล้มเหลว: " . $conn->connect_error);
 }
-
+$user_id = $_SESSION['user_id']; // ดึง user_id จาก session
 if ($_SERVER["REQUEST_METHOD"] == "POST") {
     $Name = $_POST["Name"];
-    $Student_id = $_POST["Student_id"];
+    $Student_id = $user_id;
     $Bank_name = $_POST["Bank_name"];
     $Bank_account = $_POST["Bank_account"];
     $Telephone = $_POST["Telephone"];
@@ -36,11 +36,10 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         } else {
             $sql = "INSERT INTO record1 (Name, Student_id, Bank_name, Bank_account, Telephone, department, term) 
             VALUES ('$Name', '$Student_id', '$Bank_name', '$Bank_account', '$Telephone', '$department', '$term')";
-            echo $sql;
+
             if ($conn->query($sql) === true) {
                 $message = "บันทึกเรียบร้อย";
                 $modalType = "success";
-
             } else {
                 $message = "การบันทึกข้อมูลลงในฐานข้อมูลล้มเหลว: " . $conn->error;
                 $modalType = "danger";
@@ -112,7 +111,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
                 <form method="POST" action="<?php echo $_SERVER["PHP_SELF"]; ?>" class="position-absolute top-[60%] start-50 translate-middle"><br>
                     <br>
                     ชื่อ นามสกุล: <input type="text" name="Name" class="form-control mb-2">
-                    รหัสนักศึกษา: <input type="text" name="Student_id" class="form-control mb-2">
+                    รหัสนักศึกษา: <input type="text" name="Student_id" class="form-control mb-2" value="<?php echo $user_id; ?>" readonly> <!-- ล็อคค่าและแสดง user_id -->
                     ชื่อธนาคาร:
                     <select name="Bank_name" class="form-control mb-2">
                         <option value="" disabled selected hidden>เลือกธนาคาร</option>

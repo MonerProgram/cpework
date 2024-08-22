@@ -99,7 +99,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
                     <div class="">
                         <div class="input-field flex items-center justify-center">
                             <i class="fa-solid fa-user"></i>
-                            <input type="text" name="user_id" placeholder="Student_id " class="w-full px-3 py-2 border border-gray-300 rounded focus:outline-none focus:ring-2 focus:ring-blue-500">
+                            <input type="text" name="user_id" placeholder="Student ID " class="w-full px-3 py-2 border border-gray-300 rounded focus:outline-none focus:ring-2 focus:ring-blue-500">
                         </div>
                         <div class="input-field flex items-center justify-center">
                             <i class="fa-solid fa-lock"></i>

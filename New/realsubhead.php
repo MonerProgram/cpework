@@ -7,11 +7,7 @@ require_once "layout/session.php";
 $user_id = $_GET['id'];
 $selected_month = $_GET['q'];
 
-// Debug: ตรวจสอบค่า user_id และ selected_month
-echo "User ID: ";
-var_dump($user_id);
-echo "<br>Selected Month: ";
-var_dump($selected_month);
+
 ?>
 
 <!DOCTYPE html>
@@ -20,7 +16,8 @@ var_dump($selected_month);
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Document</title>
+  <title>หน้าหลัก</title>
+  <link href="https://cdn.jsdelivr.net/npm/tailwindcss@3.3.0/dist/tailwind.min.css" rel="stylesheet">
 </head>
 
 <body>
@@ -40,26 +37,15 @@ var_dump($selected_month);
     $startOfMonth = $_GET['q'] . '-01';
     $endOfMonth = date('Y-m-t', strtotime($startOfMonth));
 
-    // Debug: ตรวจสอบค่า startOfMonth และ endOfMonth
-    echo "Start of Month: ";
-    var_dump($startOfMonth);
-    echo "<br>End of Month: ";
-    var_dump($endOfMonth);
 
     $stmt = $pdo->prepare("SELECT * FROM record WHERE dates BETWEEN ? AND ? AND user_id=?");
     $stmt->execute([$startOfMonth, $endOfMonth, $user_id]);
 
-    // Debug: ตรวจสอบ SQL Error (หากมี)
-    if ($stmt->errorInfo()[0] != '00000') {
-      echo "SQL Error";
-      var_dump($stmt->errorInfo());
-    }
+
 
     $result = $stmt->fetchAll();
 
-    // Debug: ตรวจสอบผลลัพธ์จาก query
-    echo "<br>Query Result:";
-    var_dump($result);
+
 
     if (empty($result)) {
       echo "<p>No records found for the given month and user ID.</p>";
@@ -81,7 +67,7 @@ var_dump($selected_month);
     <form action="reportdb.php" method="get">
       <input type="hidden" name="q" value="<?php echo $dates;  ?>">
       <input type="hidden" name="id" value="<?php echo $user_id;  ?>">
-      <button type="submit" class="btn btn-primary">PDF</button>
+      <button type="submit" class="btn btn-primary my-2 px-3 py-2 bg-green-500 text-white text-lg leading-tight rounded hover:bg-green-600">PDF</button>
     </form>
 
     <br>

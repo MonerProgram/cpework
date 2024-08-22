@@ -30,17 +30,15 @@ require_once "layout/session.php";
             <li class="nav-item">
               <a class="nav-link" aria-current="page" href="subhead.php">ข้อมูลทั้งหมด</a>
             </li>
+            <li class="nav-item">
+              <a class="nav-link" href="addfrom.php">บันทึกข้อมูล</a>
+            </li>
           <?php } else { ?>
             <li class="nav-item">
               <a class="nav-link" aria-current="page" href="head.php">ข้อมูลทั้งหมด</a>
             </li>
           <?php } ?>
-          <?php if ($_SESSION['user_id'] != "admin") { ?>
 
-            <li class="nav-item">
-              <a class="nav-link" href="addfrom.php">บันทึกข้อมูล</a>
-            </li>
-          <?php } ?>
 
           <?php if (!isset($_SESSION["user_id"])) { ?>
             <li class="nav-item">
@@ -53,12 +51,13 @@ require_once "layout/session.php";
               </a>
               <ul class="dropdown-menu" aria-labelledby="navbarDropdown">
                 <li><a class="dropdown-item" href="logout.php">ออกจากระบบ</a></li>
-                <li><a class="dropdown-item" href="register.php">เพิ่มข้อมูลนักศึกษา</a></li>
+                <?php if ($_SESSION['user_id'] != "admin") { ?>
+                  <li><a class="dropdown-item" href="register.php">เพิ่มข้อมูลนักศึกษา</a></li>
+                <?php } ?>
+              </ul>
             </li>
+          <?php } ?>
         </ul>
-        </li>
-      <?php } ?>
-      </ul>
       </div>
     </div>
   </nav>

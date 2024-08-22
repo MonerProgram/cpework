@@ -4,6 +4,7 @@ require_once "db/connect.php";
 require_once "layout/check_admin.php";
 require_once "layout/check.php";
 require_once "layout/session.php";
+
 $result = $controller->getEmployeeDetail();
 ?>
 <!DOCTYPE html>
