@@ -70,9 +70,30 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     <link rel="stylesheet" href="stylelog.css">
     <!-- Bootstrap CSS -->
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
-
+    <!-- Font Awesome -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
     <!-- Bootstrap JavaScript -->
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    <style>
+        .password-container {
+            position: relative;
+            width: 100%;
+        }
+
+        .password-container input {
+            width: 100%;
+            padding-right: 30px;
+            /* Adjust based on the size of the icon */
+        }
+
+        .password-container i {
+            position: absolute;
+            top: 50%;
+            right: 10px;
+            transform: translateY(-50%);
+            cursor: pointer;
+        }
+    </style>
 </head>
 
 <body>
@@ -85,7 +106,11 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
                 <div class="colm-form">
                     <div class="form-container">
                         <input type="text" name="user_id" value="<?php if ($_SERVER["REQUEST_METHOD"] == "POST") echo $_POST["user_id"] ?>" placeholder="Student ID">
-                        <input type="password" name="user_password" placeholder="Password">
+                        <div class="password-container">
+                            <input type="password" id="user_password" name="user_password" placeholder="Password">
+                            <i id="togglePassword" class="fas fa-eye"></i>
+                        </div>
+
                         <button class="btn-login">Login</button>
                         <p><span class="icon icon--info"></span><a href="register1.php">Register</a></p>
                     </div>
@@ -93,7 +118,15 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
             </div>
         </form>
     </main>
-
+    <script>
+        document.getElementById('togglePassword').addEventListener('click', function() {
+            var passwordField = document.getElementById('user_password');
+            var type = passwordField.getAttribute('type') === 'password' ? 'text' : 'password';
+            passwordField.setAttribute('type', type);
+            this.classList.toggle('fa-eye');
+            this.classList.toggle('fa-eye-slash');
+        });
+    </script>
 </body>
 
 </html>

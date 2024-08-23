@@ -80,12 +80,32 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     <link rel="stylesheet" href="stylelog.css">
     <!-- Bootstrap CSS -->
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
-
+    <!-- Font Awesome -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
     <!-- Bootstrap JavaScript -->
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
     <script src="https://cdn.tailwindcss.com"></script>
     <link rel="shortcut icon" href="https://www.linknacional.com.br/wp-content/uploads/2021/03/html-icon-480x480.png" type="image/x-icon">
+    <style>
+        .password-container {
+            position: relative;
+            width: 100%;
+        }
 
+        .password-container input {
+            width: 100%;
+            padding-right: 30px;
+            /* Adjust based on the size of the icon */
+        }
+
+        .password-container i {
+            position: absolute;
+            top: 50%;
+            right: 10px;
+            transform: translateY(-50%);
+            cursor: pointer;
+        }
+    </style>
 </head>
 
 <body>
@@ -98,12 +118,13 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
                     <h4 class="text-center text-xl font-thin mb-3">ลงทะเบียน</h4>
                     <div class="">
                         <div class="input-field flex items-center justify-center">
-                            <i class="fa-solid fa-user"></i>
+
                             <input type="text" name="user_id" placeholder="Student ID " class="w-full px-3 py-2 border border-gray-300 rounded focus:outline-none focus:ring-2 focus:ring-blue-500">
                         </div>
-                        <div class="input-field flex items-center justify-center">
-                            <i class="fa-solid fa-lock"></i>
-                            <input type="password" name="user_password" placeholder="Password" class="w-full px-3 py-2 border border-gray-300 rounded focus:outline-none focus:ring-2 focus:ring-blue-500">
+                        <div class="password-container input-field flex items-center justify-center">
+
+                            <input type="password" id="user_password" name="user_password" placeholder="รหัสผ่าน" class="w-full px-3 py-2 border border-gray-300 rounded focus:outline-none focus:ring-2 focus:ring-blue-500">
+                            <i id="togglePassword" class="fas fa-eye"></i>
                         </div>
                     </div>
                     <div class="btn-field">
@@ -115,6 +136,15 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
             </div>
         </div>
     </form>
+    <script>
+        document.getElementById('togglePassword').addEventListener('click', function() {
+            var passwordField = document.getElementById('user_password');
+            var type = passwordField.getAttribute('type') === 'password' ? 'text' : 'password';
+            passwordField.setAttribute('type', type);
+            this.classList.toggle('fa-eye');
+            this.classList.toggle('fa-eye-slash');
+        });
+    </script>
 </body>
 
 </html>
